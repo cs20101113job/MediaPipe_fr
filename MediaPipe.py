@@ -13,7 +13,7 @@ import mediapipe as mp
 from mediapipe.tasks import python 
 from mediapipe.tasks.python import vision
 
-st.title("Mediapipe三種模型進行人臉偵測")
+st.title("Mediapipe模型進行人臉偵測")
 save_folder = "KNN_SVM_Mediapipe_face_recognition_saved"
 os.makedirs(save_folder, exist_ok=True) # os.makedirs() 函數用於創建多層目錄
 uploaded_file = st.file_uploader("上傳圖片", type=["jpg", "png", "jpeg"])
