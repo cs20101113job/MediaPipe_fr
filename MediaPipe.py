@@ -27,7 +27,7 @@ if uploaded_file is not None:
     
     #原始上傳圖像
     st.subheader("原始上傳圖像")
-    st.image(original_img, use_container_width=True) # st.image() 預設接受 RGB
+    st.image(original_img, width="stretch") # st.image() 預設接受 RGB
 
     
     
@@ -53,7 +53,7 @@ if uploaded_file is not None:
     result_rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
     # MediaPipe人臉偵測
     st.subheader("MediaPipe人臉偵測")
-    st.image(result_rgb, use_container_width=True) # st.image() 預設接受 RGB
+    st.image(result_rgb, width="stretch") # st.image() 預設接受 RGB
     # MediaPipe自動儲存
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     MediaPipe_filename = os.path.join(save_folder, f"MediaPipe_{timestamp}.png")
