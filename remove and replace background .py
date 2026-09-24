@@ -28,7 +28,7 @@ if uploaded_file is not None:
     
     #原始上傳圖像
     st.subheader("原始上傳圖像")
-    st.image(original_img, use_container_width=True) # st.image() 預設接受 RGB
+    st.image(original_img, width=True) # st.image() 預設接受 RGB
 
       
     # * 人物去背
@@ -107,7 +107,7 @@ if background_file is not None:
     result0_rgb = cv2.cvtColor(output0, cv2.COLOR_BGR2RGB)
     # 人物去背
     st.subheader("人物去背")
-    st.image(result0_rgb, use_container_width=True) # st.image() 預設接受 RGB
+    st.image(result0_rgb, width=True) # st.image() 預設接受 RGB
     # 人物去背自動儲存
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     Replace_background_filename = os.path.join(save_folder, f"Replace_background_{timestamp}.png")
