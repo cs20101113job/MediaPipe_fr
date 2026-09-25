@@ -29,7 +29,7 @@ if uploaded_file is not None:
     
     #原始上傳圖像
     st.subheader("原始上傳圖像")
-    st.image(original_img, width="full") # st.image() 預設接受 RGB
+    st.image(original_img, width='stretch') # st.image() 預設接受 RGB
 
       
     # * 人物去背
@@ -76,7 +76,7 @@ if uploaded_file is not None:
     result_rgb = cv2.cvtColor(output, cv2.COLOR_BGR2RGB)
     # 人物去背
     st.subheader("人物去背")
-    st.image(result_rgb, width="full") # st.image() 預設接受 RGB
+    st.image(result_rgb, width='stretch') # st.image() 預設接受 RGB
     # 人物去背自動儲存
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     Remove_background_filename = os.path.join(save_folder, f"Remove_background_{timestamp}.png")
@@ -95,24 +95,24 @@ if uploaded_file is not None:
         backgroundb_img = imgBGR0.copy() 
         backgroundr_img = imgRGB0.copy() 
     
-    # 背景圖
-    st.subheader("待換背景圖像")
-    st.image(backgroundr_img, width="full") # st.image() 預設接受 RGB
+        # 背景圖
+        st.subheader("待換背景圖像")
+        st.image(backgroundr_img, width='stretch') # st.image() 預設接受 RGB
 
-    bg = cv2.resize(backgroundb_img, (w, h)) 
-    background0 = bg
-    
-    # *依遮罩做影像合成； 將主體圖像與背景進行結合，可以得到影像合成的結果
-    output0 = np.where(condition[..., None], bgr, background0)
+        bg = cv2.resize(backgroundb_img, (w, h)) 
+        background0 = bg
+        
+        # *依遮罩做影像合成； 將主體圖像與背景進行結合，可以得到影像合成的結果
+        output0 = np.where(condition[..., None], bgr, background0)
 
 
-    # *將畫好框的 bgr 轉回 RGB，供 Streamlit 正確渲染顏色
-    result0_rgb = cv2.cvtColor(output0, cv2.COLOR_BGR2RGB)
-    # 人物去背
-    st.subheader("人物去背")
-    st.image(result0_rgb, width=True) # st.image() 預設接受 RGB
-    # 人物去背自動儲存
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    Replace_background_filename = os.path.join(save_folder, f"Replace_background_{timestamp}.png")
-    cv2.imwrite(Replace_background_filename, output0)
-    st.success(f"更換背景圖已經儲存 {Replace_background_filename}")
+        # *將畫好框的 bgr 轉回 RGB，供 Streamlit 正確渲染顏色
+        result0_rgb = cv2.cvtColor(output0, cv2.COLOR_BGR2RGB)
+        # 人物去背
+        st.subheader("人物去背")
+        st.image(result0_rgb, width='stretch') # st.image() 預設接受 RGB
+        # 人物去背自動儲存
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        Replace_background_filename = os.path.join(save_folder, f"Replace_background_{timestamp}.png")
+        cv2.imwrite(Replace_background_filename, output0)
+        st.success(f"更換背景圖已經儲存 {Replace_background_filename}")
