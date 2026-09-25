@@ -89,11 +89,11 @@ if uploaded_file is not None:
     # 將所有圖像處理邏輯，放在 if 裡面
     if background_file is not None:
     # 改用 getvalue() 避免 Streamlit 重新渲染時讀取到空 Buffer
-    background_file_bytes = np.asarray(bytearray(background_file.getvalue()), dtype=np.uint8)
-    imgBGR0 = cv2.imdecode(background_file_bytes, cv2.IMREAD_COLOR) # 解碼成 NumPy 陣列 (BGR)
-    imgRGB0 = cv2.cvtColor(imgBGR0, cv2.COLOR_BGR2RGB) # 轉換成 RGB 格式 
-    backgroundb_img = imgBGR0.copy() 
-    backgroundr_img = imgRGB0.copy() 
+        background_file_bytes = np.asarray(bytearray(background_file.getvalue()), dtype=np.uint8)
+        imgBGR0 = cv2.imdecode(background_file_bytes, cv2.IMREAD_COLOR) # 解碼成 NumPy 陣列 (BGR)
+        imgRGB0 = cv2.cvtColor(imgBGR0, cv2.COLOR_BGR2RGB) # 轉換成 RGB 格式 
+        backgroundb_img = imgBGR0.copy() 
+        backgroundr_img = imgRGB0.copy() 
     
     # 背景圖
     st.subheader("待換背景圖像")
