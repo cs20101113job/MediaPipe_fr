@@ -44,7 +44,9 @@ if uploaded_file is not None:
     running_mode=VisionRunningMode.IMAGE, # VisionRunningMode.IMAGE代表偵測圖片
     output_segmentation_masks=True  #開啟人體遮罩
     )
-    Media_rgb = original_img.copy() # 直接使用已解碼好的陣列
+    # Media_rgb = original_img.copy() #原程式 直接使用已解碼好的陣列
+    # [修正 1] 強制將陣列轉為 C-contiguous 記憶體連續狀態，並確保為 uint8
+    Media_rgb = np.ascontiguousarray(original_img, dtype=np.uint8)
     if Media_rgb is None:
         raise ValueError("找不到圖片")
     h, w, _ = Media_rgb.shape # 取得圖片高、寬、通道，_表示不同通道
@@ -55,8 +57,8 @@ if uploaded_file is not None:
         if not result.segmentation_masks:
             st.write("未偵測到人體")
             st.stop()
-        mask = result.segmentation_masks[0].numpy_view()
-    
+        # mask = result.segmentation_masks[0].numpy_view() -原程式
+        mask = result.segmentation_masks[0].numpy_view().copy()
 
     # 最後面的 0 表示標準差（SigmaX = 0），自動計算高斯模糊的權重分配
     mask = cv2.GaussianBlur(mask, (15, 15), 0)
