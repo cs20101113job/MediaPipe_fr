@@ -16,11 +16,12 @@ from mediapipe.tasks.python import vision
 st.title("圖像人物去背及換背景")
 save_folder = "Remove or Replace background_saved"
 os.makedirs(save_folder, exist_ok=True) # os.makedirs() 函數用於創建多層目錄
-uploaded_file = st.file_uploader("上傳圖片", type=["jpg", "png", "jpeg"])
+uploaded_file = st.file_uploader("1. 上傳圖片", type=["jpg", "png", "jpeg"])
 
 # 將所有圖像處理邏輯，放在 if 裡面
 if uploaded_file is not None:
-    file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+    # 改用 getvalue() 避免 Streamlit 重新渲染時讀取到空 Buffer
+    file_bytes = np.asarray(bytearray(uploaded_file.getvalue()), dtype=np.uint8)
     imgBGR = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR) # 解碼成 NumPy 陣列 (BGR)
     imgRGB = cv2.cvtColor(imgBGR, cv2.COLOR_BGR2RGB) # 轉換成 RGB 格式 
     original_img = imgRGB.copy() # 複製給 original_img，位於記憶體中的 RGB 格式 NumPy 陣列
@@ -28,7 +29,7 @@ if uploaded_file is not None:
     
     #原始上傳圖像
     st.subheader("原始上傳圖像")
-    st.image(original_img, width=True) # st.image() 預設接受 RGB
+    st.image(original_img, width="full") # st.image() 預設接受 RGB
 
       
     # * 人物去背
@@ -75,7 +76,7 @@ if uploaded_file is not None:
     result_rgb = cv2.cvtColor(output, cv2.COLOR_BGR2RGB)
     # 人物去背
     st.subheader("人物去背")
-    st.image(result_rgb, use_container_width=True) # st.image() 預設接受 RGB
+    st.image(result_rgb, width="full") # st.image() 預設接受 RGB
     # 人物去背自動儲存
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     Remove_background_filename = os.path.join(save_folder, f"Remove_background_{timestamp}.png")
@@ -83,10 +84,12 @@ if uploaded_file is not None:
     st.success(f"人物去背已經儲存 {Remove_background_filename}")
 
 # * 換背景圖
-background_file = st.file_uploader("上傳待換背景圖片", type=["jpg", "png", "jpeg"])   
-# 將所有圖像處理邏輯，放在 if 裡面
-if background_file is not None:
-    background_file_bytes = np.asarray(bytearray(background_file.read()), dtype=np.uint8)
+    st.divider()
+    background_file = st.file_uploader("2. 上傳待換背景圖片", type=["jpg", "png", "jpeg"])   
+    # 將所有圖像處理邏輯，放在 if 裡面
+    if background_file is not None:
+    # 改用 getvalue() 避免 Streamlit 重新渲染時讀取到空 Buffer
+    background_file_bytes = np.asarray(bytearray(background_file.getvalue()), dtype=np.uint8)
     imgBGR0 = cv2.imdecode(background_file_bytes, cv2.IMREAD_COLOR) # 解碼成 NumPy 陣列 (BGR)
     imgRGB0 = cv2.cvtColor(imgBGR0, cv2.COLOR_BGR2RGB) # 轉換成 RGB 格式 
     backgroundb_img = imgBGR0.copy() 
@@ -94,7 +97,7 @@ if background_file is not None:
     
     # 背景圖
     st.subheader("待換背景圖像")
-    st.image(backgroundr_img, use_container_width=True) # st.image() 預設接受 RGB
+    st.image(backgroundr_img, width="full") # st.image() 預設接受 RGB
 
     bg = cv2.resize(backgroundb_img, (w, h)) 
     background0 = bg
@@ -112,4 +115,4 @@ if background_file is not None:
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     Replace_background_filename = os.path.join(save_folder, f"Replace_background_{timestamp}.png")
     cv2.imwrite(Replace_background_filename, output0)
-    st.success(f"更換背景圖已經儲存 {Remove_background_filename}")
+    st.success(f"更換背景圖已經儲存 {Replace_background_filename}")
