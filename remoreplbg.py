@@ -62,7 +62,7 @@ if uploaded_file is not None:
 
     # 最後面的 0 表示標準差（SigmaX = 0），自動計算高斯模糊的權重分配
     mask = cv2.GaussianBlur(mask, (15, 15), 0)
-    condition = mask > 0.5 # 可以調整數字
+    condition = mask > 0.6 # 可以調整數字
     #以下為遮罩設定語法
     background = np.zeros_like(bgr) # 
     #以上為遮罩設定語法
